@@ -218,15 +218,8 @@ jobs:
       run: |
         source openpilot/selfdrive/test/setup_xvfb.sh
         set +e
-        top -b -c -w 512 -d 5 > /tmp/top.log 2>&1 &
-        TOP_PID=$!
         pytest -n0 -s openpilot/tools/sim/tests/test_metadrive_bridge.py
         CODE=$?
-        kill "$TOP_PID" 2>/dev/null || true
-        echo "===== overall CPU over time ====="
-        grep "%Cpu" /tmp/top.log || true
-        echo "===== key processes over time ====="
-        grep -E "modeld|metadrive|camerad|locationd|planner|controlsd" /tmp/top.log || true
         exit $CODE
   create_ui_report:
     name: Create UI Report
